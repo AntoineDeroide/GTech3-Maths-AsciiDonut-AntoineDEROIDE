@@ -27,11 +27,23 @@ int main(int argc, char** argv)
 	std::cout << "\033[?25l"; // Set cursor to invisible
 	std::cout << "\033[2J"; // Clear console
 	std::cout << "\033[H"; // cursor to home pos
-	std::cout << "Hello World !\n\n";
+	//std::cout << "Hello World !\n\n";
 
+// 1.4
+	unsigned short width = 100;
+	unsigned short height = 20;
+	char* vector = new char[width * height];
 
+	for (int i = 0; i < height; i++) 
+	{
+		for (int j = 0; j < width; j++)
+		{
+			vector[i + j] = '.';
 
-
+			std::cout << vector[i + j];
+		}
+		std::cout << '\n';
+	}
 
 
 
