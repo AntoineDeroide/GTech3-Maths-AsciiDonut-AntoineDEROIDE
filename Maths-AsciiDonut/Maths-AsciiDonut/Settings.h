@@ -2,13 +2,13 @@
 
 class Settings
 {
-	static void GetSettings(int argc, char** argv)
-	{
+public:
+	Settings(int argc, char** argv);
 
-		return;
+	int GetWidth();
+	int GetHeight();
 
-	}
-
-
+private:
+	int m_width, m_height;
 };
 

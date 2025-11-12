@@ -1,6 +1,8 @@
 #include <iostream>
 #include <windows.h>
 
+#include "Settings.h"
+
 // 1.1
 int main(int argc, char** argv)
 {
@@ -45,9 +47,8 @@ int main(int argc, char** argv)
 		std::cout << '\n';
 	}
 
-// 1.5
-
-
+// 1.5 / 1.6
+	Settings settings(argc, argv);
 
 }
 
