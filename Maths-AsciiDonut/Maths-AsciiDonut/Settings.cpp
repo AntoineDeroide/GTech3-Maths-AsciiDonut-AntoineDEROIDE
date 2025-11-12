@@ -1,23 +1,31 @@
 #include "Settings.h"
 #include <iostream>
 
-Settings::Settings(int argc, char** argv)
+Settings::Settings(int argc, char** argv) : m_width(100), m_height(20), m_resolution(32)
 {
 	if (argc < 5)
 	{
-		std::cout << "Not enough parameters to configure width and height of the display\n"
-			<< "assigning default values\n";
-		m_width = 100;
-		m_height = 20;
+		std::cout << "Not enough parameters to configure width and height of the display, assigning default values\n";
 		return;
 	}
-	// AsciiDonut.exe -w 3 -h 189
-	if (argv[1] == "-w") m_width = atoi(argv[2]);
-	if (argv[1] == "-h") m_height = atoi(argv[2]);
-
-	// AsciiDonut.exe -h 35 -w 0983
-	if (argv[3] == "-w") m_width = atoi(argv[4]);
-	if (argv[3] == "-h") m_height = atoi(argv[4]);
+	for (int i = 1; i < argc; i++)
+	{
+		if (argv[i] == "-w" && (i + 1) <= argc)
+		{
+			m_width = atoi(argv[i + 1]);
+			i++;
+		}
+		if (argv[i] == "-w" && (i + 1) <= argc)
+		{
+			m_height = atoi(argv[i + 1]);
+			i++;
+		}
+		if (argv[i] == "-r" && (i + 1) <= argc)
+		{
+			m_resolution = atoi(argv[i + 1]);
+			i++;
+		}
+	}
 }
 
 int Settings::GetWidth()
