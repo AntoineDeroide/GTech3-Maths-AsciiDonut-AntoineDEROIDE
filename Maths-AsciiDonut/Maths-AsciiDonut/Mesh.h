@@ -4,6 +4,7 @@
 struct Vertex
 {
 	float x, y, z;
+	Vertex(float, float, float);
 	void Debug();
 };
 
@@ -15,8 +16,15 @@ public:
 	Mesh(int resolution);
 	Mesh(const std::vector<Vertex>&);
 
-	Mesh() = default;
+	Mesh();
 	~Mesh() = default;
+
+	void GenerateCircle(float radius, const Vertex&);
+	void GenerateHalfCircle(float radius, const Vertex&);
+	void GenerateRectangle(float width, float height);
+	void GenerateSquare(float size);
+
+	void GenerateCube(float size);
 
 	void Debug();
 	void Update();

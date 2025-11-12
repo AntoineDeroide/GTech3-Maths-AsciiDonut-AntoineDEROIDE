@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "Settings.h"
+#include "Screen.h"
 
 // 1.1
 int main(int argc, char** argv)
@@ -32,7 +33,7 @@ int main(int argc, char** argv)
 	//std::cout << "Hello World !\n\n";
 
 // 1.4
-	unsigned short width = 100;
+	/*unsigned short width = 100;
 	unsigned short height = 20;
 	char* vector = new char[width * height];
 
@@ -45,10 +46,18 @@ int main(int argc, char** argv)
 			std::cout << vector[i + j];
 		}
 		std::cout << '\n';
-	}
+	}*/
 
 // 1.5 / 1.6
+// 1.7
+// 2.1
+// 2.2
+// 2.3
 	Settings settings(argc, argv);
-
+	Screen screen(settings);
+	Mesh circle;
+	Mesh halfcircle;
+	Mesh rectangle;
+	Mesh square;
 }
 

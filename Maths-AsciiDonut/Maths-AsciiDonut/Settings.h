@@ -11,5 +11,7 @@ public:
 
 private:
 	int m_width, m_height, m_resolution;
+
+	friend class Screen;
 };
 
