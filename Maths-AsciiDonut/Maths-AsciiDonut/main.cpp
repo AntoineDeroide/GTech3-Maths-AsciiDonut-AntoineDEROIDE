@@ -2,6 +2,7 @@
 #include <windows.h>
 
 #include "Settings.h"
+#include "Mesh.h"
 #include "Screen.h"
 
 // 1.1
@@ -55,9 +56,13 @@ int main(int argc, char** argv)
 // 2.3
 	Settings settings(argc, argv);
 	Screen screen(settings);
-	Mesh circle;
-	Mesh halfcircle;
-	Mesh rectangle;
-	Mesh square;
+	Mesh circle(32); circle.GenerateCircle(5, Vertex(0,0,0));
+	circle.Debug();
+	Mesh halfcircle(32); halfcircle.GenerateHalfCircle(5, Vertex(0, 0, 0));
+	halfcircle.Debug();
+	Mesh rectangle(32); rectangle.GenerateRectangle(20, 10);
+	rectangle.Debug();
+	Mesh square(32); square.GenerateSquare(20);
+	square.Debug();
 }
 

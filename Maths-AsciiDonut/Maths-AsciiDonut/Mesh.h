@@ -16,7 +16,6 @@ public:
 	Mesh(int resolution);
 	Mesh(const std::vector<Vertex>&);
 
-	Mesh();
 	~Mesh() = default;
 
 	void GenerateCircle(float radius, const Vertex&);

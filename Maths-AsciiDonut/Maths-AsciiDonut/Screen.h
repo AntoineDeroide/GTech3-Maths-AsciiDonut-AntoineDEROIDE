@@ -5,12 +5,12 @@ class Mesh;
 class Screen
 {
 public:
-	Screen();
+	Screen() = default;
 	Screen(const Settings&);
-	~Screen();
+	~Screen() = default;
 
 	void Display(int width, int height);
-	void Display(const Settings&);
+	void Display();
 	void Display(const Mesh&);
 
 private:
