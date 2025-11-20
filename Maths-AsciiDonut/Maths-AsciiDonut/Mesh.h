@@ -14,19 +14,22 @@ class Mesh
 {
 public:
 	Mesh(int resolution);
-	Mesh(const std::vector<Vertex>&);
+	//Mesh(const std::vector<Vertex>&);
 
 	~Mesh() = default;
 
-	void GenerateCircle(float radius, const Vertex&);
-	void GenerateHalfCircle(float radius, const Vertex&);
-	void GenerateRectangle(float width, float height);
-	void GenerateSquare(float size);
-
-	void GenerateCube(float size);
+	void MakeCircle(float radius, const Vertex&);
+	void MakeHalfCircle(float radius, const Vertex&);
+	void MakeRectangle(float width, float height);
+	void MakeSquare(float size);
+		 
+	void MakeCube(float size);
 
 	void Debug();
 	void Update();
+
+	void AddVertex(Vertex vertex);
+	void Clear();
 
 private:
 	std::vector<Vertex> m_vertices;

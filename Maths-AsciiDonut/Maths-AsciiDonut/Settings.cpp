@@ -37,3 +37,8 @@ int Settings::GetHeight()
 {
 	return m_height;
 }
+
+int Settings::GetResolution()
+{
+	return m_resolution;
+}

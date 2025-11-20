@@ -1,8 +1,10 @@
 #include "Mesh.h"
+#include "Screen.h"
+
 #include <iostream>
 
 // 
-float PI = 3.141592653589793;
+float PI = 3.141592653589793f;
 
 void Vertex::Debug()
 {
@@ -19,13 +21,13 @@ Mesh::Mesh(int resolution = 32) : m_resolution(resolution)
 	// code...
 }
 
-void Mesh::GenerateCube(float size)
+void Mesh::MakeCube(float size)
 {
-	for (int z = 0; z < size * m_resolution; z++)
+	for (float z = 0; z < size * m_resolution; z++)
 	{
-		for (int y = 0; y < size * m_resolution; y++)
+		for (float y = 0; y < size * m_resolution; y++)
 		{
-			for (int x = 0; x < size * m_resolution; x++)
+			for (float x = 0; x < size * m_resolution; x++)
 			{
 				m_vertices.push_back(Vertex(x, y, z));
 			}
@@ -33,33 +35,33 @@ void Mesh::GenerateCube(float size)
 	}
 }
 
-void Mesh::GenerateSquare(float size)
+void Mesh::MakeSquare(float size)
 {
-	for (int y = 0; y < size * m_resolution; y++)
+	for (float y = 0; y < size * m_resolution; y++)
 	{
-		for (int x = 0; x < size * m_resolution; x++)
+		for (float x = 0; x < size * m_resolution; x++)
 		{
 			m_vertices.push_back(Vertex(x, y, 0));
 		}
 	}
 }
 
-void Mesh::GenerateRectangle(float width, float height)
+void Mesh::MakeRectangle(float width, float height)
 {
-	for (int y = 0; y < height * m_resolution; y++)
+	for (float y = 0; y < height * m_resolution; y++)
 	{
-		for (int x = 0; x < width * m_resolution; x++)
+		for (float x = 0; x < width * m_resolution; x++)
 		{
 			m_vertices.push_back(Vertex(x, y, 0));
 		}
 	}
 }
 
-void Mesh::GenerateCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f, 0.0f))
+void Mesh::MakeCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f, 0.0f))
 {
 	float theta = 0.0f;
 
-	for (int i = 0; i < 360; i++)
+	for (float i = 0; i < 360; i++)
 	{
 		theta = i * PI / 180;
 		float point_x = center.x + radius * cos(theta);
@@ -68,7 +70,7 @@ void Mesh::GenerateCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f
 	}
 }
 
-void Mesh::GenerateHalfCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f, 0.0f))
+void Mesh::MakeHalfCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f, 0.0f))
 {
 	float theta = 0.0f;
 
@@ -93,5 +95,15 @@ void Mesh::Update()
 {
 	m_resolution = m_vertices.size();
 
+}
+
+void Mesh::AddVertex(Vertex vertex)
+{
+	m_vertices.push_back(vertex);
+}
+
+void Mesh::Clear()
+{
+	m_vertices.clear();
 }
 

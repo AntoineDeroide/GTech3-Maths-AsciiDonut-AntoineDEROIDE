@@ -1,6 +1,7 @@
 #include "Settings.h"
+#include "Mesh.h"
 
-class Mesh;
+#include <vector>
 
 class Screen
 {
@@ -9,12 +10,18 @@ public:
 	Screen(const Settings&);
 	~Screen() = default;
 
+	void Clear();
+	void Draw(const Mesh&);
+
 	void Display(int width, int height);
 	void Display();
-	void Display(const Mesh&);
 
 private:
+	Vertex MakeProjection(const Vertex& vertex);
+	void Display(const Mesh& mesh);
 	Settings m_settings;
 
+
+	friend class Mesh;
 };
 
