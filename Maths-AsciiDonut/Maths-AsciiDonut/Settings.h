@@ -1,11 +1,5 @@
 #pragma once
 
-enum DisplayedChar : char
-{
-	BACKGROUND_CHAR = ' ',
-	PROJECTION_CHAR = 'X',
-};
-
 class Settings
 {
 public:
@@ -14,8 +8,14 @@ public:
 	int GetWidth();
 	int GetHeight();
 	int GetResolution();
-	int GetScreenPosition();
-	int GetMeshPosition();
+	float GetScreenPosition();
+	float GetMeshPosition();
+
+	void SetBackgroundChar(char _c);
+	char GetBackgroundChar();
+	
+	void SetMeshPixelChar(char _c);
+	char GetMeshPixelChar();
 
 private:
 	int m_width;
@@ -24,7 +24,8 @@ private:
 	float m_screenPosition;
 	float m_meshPosition;
 
-	char m_displayParameters[2]; // 0 == background ; 1 == mesh pixels
+	char m_background;
+	char m_meshPixel;
 
 	friend class Screen;
 };

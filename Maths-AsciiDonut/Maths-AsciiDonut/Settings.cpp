@@ -79,3 +79,23 @@ float Settings::GetMeshPosition()
 {
 	return m_meshPosition;
 }
+
+void Settings::SetBackgroundChar(char _c)
+{
+	m_background = _c;
+}
+
+char Settings::GetBackgroundChar()
+{
+	return m_background;
+}
+
+void Settings::SetMeshPixelChar(char _c)
+{
+	m_meshPixel = _c;
+}
+
+char Settings::GetMeshPixelChar()
+{
+	return m_meshPixel;
+}
