@@ -1,6 +1,13 @@
 #pragma once
 #include <vector>
 
+enum Axis : char
+{
+	X = 'X',
+	Y = 'Y',
+	Z = 'Z'
+};
+
 struct Vertex
 {
 	float x, y, z;

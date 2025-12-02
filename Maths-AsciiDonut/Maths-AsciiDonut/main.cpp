@@ -18,3 +18,6 @@ int main(int argc, char** argv)
 	screen.Display();
 }
 
+// 2.5
+// La projection est etireee verticalement car la surface occupee par un charactere est un rectangle 
+// avec une longueur 2 fois plus grande que sa largeur
