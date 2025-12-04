@@ -6,7 +6,9 @@ Settings::Settings(int argc, char** argv) :
 	m_height(20),
 	m_resolution(32),
 	m_screenPosition(3.33f),
-	m_meshPosition(5.0f)
+	m_meshPosition(5.0f),
+	m_background('.'),
+	m_meshPixel('X')
 {
 	if (argc < 5)
 	{
@@ -44,12 +46,12 @@ Settings::Settings(int argc, char** argv) :
 		// DisplayedChar
 		if (argv[i] == "-b" && (i + 1) <= argc)
 		{	// BACKGROUND
-			m_displayParameters[0] = argv[i + 1][0];
+			m_background = argv[i + 1][0];
 			i++;
 		}
 		if (argv[i] == "-p" && (i + 1) <= argc)
 		{	// MESH PIXELS
-			m_displayParameters[1] = argv[i + 1][0];
+			m_meshPixel = argv[i + 1][0];
 			i++;
 		}
 	}

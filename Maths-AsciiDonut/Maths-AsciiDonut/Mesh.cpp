@@ -66,6 +66,11 @@ void Mesh::MakeSquare(float size)
 	}
 }
 
+void Mesh::GenerateTorus(float _majorRadius, float _minorRadius)
+{
+	// code...
+}
+
 void Mesh::MakeRectangle(float width, float height)
 {
 	for (float y = 0; y < height * m_resolution; y++)
