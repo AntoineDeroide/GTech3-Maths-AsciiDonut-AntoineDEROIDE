@@ -16,6 +16,26 @@ Vertex::Vertex(float _x, float _y, float _z) : x(_x), y(_y), z(_z)
 	// code...
 }
 
+void Vertex::Rotate(float _angle, Axis _axis)
+{
+	Vertex temp = *this;
+	switch (_axis)
+	{
+	case(Axis::X):
+		y = temp.y * cos(_angle) - temp.z * sin(_angle);
+		z = temp.y * sin(_angle) + temp.z * cos(_angle);
+		break;
+	case(Axis::Y):
+		x = temp.x * cos(_angle) + temp.z * sin(_angle);
+		z = (-temp.x * sin(_angle)) + temp.z * cos(_angle);
+		break;
+	case(Axis::Z):		
+		x = temp.x * cos(_angle) - temp.y * sin(_angle);
+		y = temp.x * sin(_angle) + temp.y * cos(_angle);
+		break;
+	}
+}
+
 Mesh::Mesh(int resolution = 32) : m_resolution(resolution)
 {
 	// code...
@@ -95,6 +115,14 @@ void Mesh::Update()
 {
 	m_resolution = m_vertices.size();
 
+}
+
+void Mesh::Rotate(float _angle, Axis _axis)
+{
+	for (Vertex& i : m_vertices)
+	{
+		i.Rotate(_angle, _axis);
+	}
 }
 
 void Mesh::AddVertex(Vertex vertex)

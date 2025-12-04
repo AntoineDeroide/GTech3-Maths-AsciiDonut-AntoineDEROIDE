@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-enum Axis : char
+enum class Axis : char
 {
 	X = 'X',
 	Y = 'Y',
@@ -13,6 +13,7 @@ struct Vertex
 	float x, y, z;
 	Vertex(float, float, float);
 	void Debug();
+	void Rotate(float _angle, Axis _axis);
 };
 
 ////////////////////////////
@@ -29,11 +30,13 @@ public:
 	void MakeHalfCircle(float radius, const Vertex&);
 	void MakeRectangle(float width, float height);
 	void MakeSquare(float size);
+	void GenerateTorus(float _majorRadius, float _minorRadius);
 		 
 	void MakeCube(float size);
 
 	void Debug();
 	void Update();
+	void Rotate(float _angle, Axis _axis);
 
 	void AddVertex(Vertex vertex);
 	void Clear();
