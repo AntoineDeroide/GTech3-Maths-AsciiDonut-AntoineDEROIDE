@@ -1,66 +1,72 @@
-#include "Screen.h"
-
 #include <iostream>
+#include <cmath>
+#include "Screen.h"
+#include "Settings.h"
+#include "Mesh.h"
 
-Screen::Screen(const Settings& settings) : m_settings(settings)
+Screen::Screen(Settings const& settings)
+    : m_width(settings.GetScreenWidth())
+    , m_height(settings.GetScreenHeight())
+    , m_zPosition(settings.GetScreenPosition())
+    , m_background(settings.GetScreenBackground())
+    , m_meshProjection(settings.GetScreenMeshProjection())
+    , m_meshZPosition(settings.GetMeshPosition())
+    , m_pixels(m_width* m_height, '.')
+    , m_oozBuffer(m_width* m_height, 0.f)
 {
-	// code...
 }
 
-void Screen::Clear()
+void Screen::Display() const
 {
-	std::cout << "\033[?25l"; // Set cursor to invisible
-	std::cout << "\033[2J"; // Clear console
-	std::cout << "\033[H"; // cursor to home pos
+    for (int i = 0; i < m_height; i++)
+    {
+        for (int j = 0; j < m_width; j++)
+        {
+            std::cout << m_pixels[m_width * i + j];
+        }
+        std::cout << std::endl;
+    }
 }
 
-void Screen::Draw(const Mesh& mesh)
+void Screen::Display(Mesh const& mesh)
 {
-	// Parcourir le mesh, faire la projection de chaque point dans l'ecran
-
+    std::fill(m_pixels.begin(), m_pixels.end(), m_background);
+    _ProjectMesh(mesh);
+    Display();
 }
 
-void Screen::Display(int width, int height)
+void Screen::_ProjectMesh(Mesh const& mesh)
 {
-	Clear();
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			std::cout << '.';
-		}
-		std::cout << '\n';
-	}
+    std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
+    for (Vertex vertex : mesh.GetVertices())
+    {
+        _ProjectInCenterScreenSpace(vertex);
+        _ProjectInTopLeftScreenSpace(vertex);
+        int u = std::round(vertex.x);
+        int v = std::round(vertex.y);
+        float ooz = 1.f / vertex.z;
+        if (_IsVertexInScreen(u, v) && ooz > m_oozBuffer[v * m_width + u])
+        {
+            m_oozBuffer[v * m_width + u] = ooz;
+            m_pixels[v * m_width + u] = m_meshProjection;
+        }
+    }
 }
 
-void Screen::Display()
+void Screen::_ProjectInCenterScreenSpace(Vertex& vertex)
 {
-	for (int i = 0; i < m_settings.m_height; i++)
-	{
-		for (int j = 0; j < m_settings.m_width; j++)
-		{
-			std::cout << '.';
-		}
-		std::cout << '\n';
-	}
+    vertex.z += m_meshZPosition;
+    vertex.x = m_zPosition * vertex.x / vertex.z;
+    vertex.y = m_zPosition * vertex.y / vertex.z / 2.f;
 }
 
-Vertex Screen::MakeProjection(const Vertex& vertex)
+void Screen::_ProjectInTopLeftScreenSpace(Vertex& vertex)
 {
-
-
-	return Vertex(0.0f, 0.0f, 0.0f);
+    vertex.x += m_width / 2;
+    vertex.y += m_height / 2;
 }
 
-void Screen::Display(const Mesh& mesh)
+bool Screen::_IsVertexInScreen(int u, int v)
 {
-	// Si l'on rencontre un point du mesh projeté, on affiche autre chose qu'un point
-	for (int i = 0; i < m_settings.m_height; i++)
-	{
-		for (int j = 0; j < m_settings.m_width; j++)
-		{
-			std::cout << '.';
-		}
-		std::cout << '\n';
-	}
+    return u >= 0 && u < m_width && v >= 0 && v < m_height;
 }

@@ -1,142 +1,100 @@
+#include <cmath>
 #include "Mesh.h"
-#include "Screen.h"
+#include "Settings.h"
 
-#include <iostream>
+constexpr float PI = 3.14159265f;
 
-// 
-float PI = 3.141592653589793f;
-
-void Vertex::Debug()
+Mesh::Mesh(Settings const& settings)
+    : m_resolution(settings.GetMeshResolution())
 {
-	std::cout << "x : " << x << ", y : " << y << ", z : " << z << std::endl;
 }
 
-Vertex::Vertex(float _x, float _y, float _z) : x(_x), y(_y), z(_z)
+void Vertex::Rotate(Axis _axis, float _angle)
 {
-	// code...
+    Vertex temp = *this;
+    switch (_axis)
+    {
+    case(Axis::X):
+        y = temp.y * cos(_angle) - temp.z * sin(_angle);
+        z = temp.y * sin(_angle) + temp.z * cos(_angle);
+        break;
+    case(Axis::Y):
+        x = temp.x * cos(_angle) + temp.z * sin(_angle);
+        z = (-temp.x * sin(_angle)) + temp.z * cos(_angle);
+        break;
+    case(Axis::Z):
+        x = temp.x * cos(_angle) - temp.y * sin(_angle);
+        y = temp.x * sin(_angle) + temp.y * cos(_angle);
+        break;
+    }
 }
 
-void Vertex::Rotate(float _angle, Axis _axis)
+void Mesh::GenerateCircle(float radius)
 {
-	Vertex temp = *this;
-	switch (_axis)
-	{
-	case(Axis::X):
-		y = temp.y * cos(_angle) - temp.z * sin(_angle);
-		z = temp.y * sin(_angle) + temp.z * cos(_angle);
-		break;
-	case(Axis::Y):
-		x = temp.x * cos(_angle) + temp.z * sin(_angle);
-		z = (-temp.x * sin(_angle)) + temp.z * cos(_angle);
-		break;
-	case(Axis::Z):		
-		x = temp.x * cos(_angle) - temp.y * sin(_angle);
-		y = temp.x * sin(_angle) + temp.y * cos(_angle);
-		break;
-	}
+    _GenerateSector(radius, 2 * PI);
 }
 
-Mesh::Mesh(int resolution = 32) : m_resolution(resolution)
+void Mesh::GenerateHalfCircle(float radius)
 {
-	// code...
+    _GenerateSector(radius, PI);
 }
 
-void Mesh::MakeCube(float size)
+void Mesh::GenerateRectangle(float width, float height)
 {
-	for (float z = 0; z < size * m_resolution; z++)
-	{
-		for (float y = 0; y < size * m_resolution; y++)
-		{
-			for (float x = 0; x < size * m_resolution; x++)
-			{
-				m_vertices.push_back(Vertex(x, y, z));
-			}
-		}
-	}
+    m_vertices.resize(m_resolution * m_resolution);
+    for (int i = 0; i < m_resolution; i++)
+    {
+        for (int j = 0; j < m_resolution; j++)
+        {
+            m_vertices[m_resolution * i + j].x = (1.f * i / (m_resolution - 1) - 0.5f) * width;
+            m_vertices[m_resolution * i + j].y = (1.f * j / (m_resolution - 1) - 0.5f) * height;
+            m_vertices[m_resolution * i + j].z = 0.f;
+        }
+    }
+}
+void Mesh::GenerateSquare(float side)
+{
+    GenerateRectangle(side, side);
 }
 
-void Mesh::MakeSquare(float size)
+void Mesh::GenerateTorus(float _majorRadius, float _minorRadius) // Major = distance avec l'axe | minor = rayon du cercle
 {
-	for (float y = 0; y < size * m_resolution; y++)
-	{
-		for (float x = 0; x < size * m_resolution; x++)
-		{
-			m_vertices.push_back(Vertex(x, y, 0));
-		}
-	}
+    m_vertices.resize(m_resolution * m_resolution);
+    float angleZ = 0;
+    float angleY = 0;
+    for (int i = 0; i < m_resolution; i++)
+    {
+        angleY = (2 * PI * i) / (m_resolution - 1);
+        for (int j = 0; j < m_resolution; j++)
+        {
+            angleZ = (2 * PI * j) / (m_resolution - 1);
+            m_vertices[m_resolution * i + j].x = _majorRadius + _minorRadius * cos(angleZ);
+            m_vertices[m_resolution * i + j].y = _minorRadius * sin(angleZ);
+            m_vertices[m_resolution * i + j].Rotate(Axis::Z, angleY);
+        }
+    }
 }
 
-void Mesh::GenerateTorus(float _majorRadius, float _minorRadius)
+void Mesh::Debug() const
 {
-	// code...
+    for (Vertex const& vertex : m_vertices)
+    {
+        vertex.Debug();
+    }
 }
 
-void Mesh::MakeRectangle(float width, float height)
+void Mesh::_GenerateSector(float radius, float angle)
 {
-	for (float y = 0; y < height * m_resolution; y++)
-	{
-		for (float x = 0; x < width * m_resolution; x++)
-		{
-			m_vertices.push_back(Vertex(x, y, 0));
-		}
-	}
+    m_vertices.resize(m_resolution * m_resolution);
+    for (int i = 0; i < m_resolution; i++)
+    {
+        float r = (radius * i) / (m_resolution - 1);
+        for (int j = 0; j < m_resolution; j++)
+        {
+            float theta = (angle * j) / (m_resolution - 1);
+            m_vertices[m_resolution * i + j].x = r * std::cos(theta);
+            m_vertices[m_resolution * i + j].y = r * std::sin(theta);
+            m_vertices[m_resolution * i + j].z = 0.f;
+        }
+    }
 }
-
-void Mesh::MakeCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f, 0.0f))
-{
-	float theta = 0.0f;
-
-	for (float i = 0; i < 360; i++)
-	{
-		theta = i * PI / 180;
-		float point_x = center.x + radius * cos(theta);
-		float point_y = center.y + radius * sin(theta);
-		m_vertices.push_back(Vertex(point_x, point_y, center.z));
-	}
-}
-
-void Mesh::MakeHalfCircle(float radius, const Vertex& center = Vertex(0.0f, 0.0f, 0.0f))
-{
-	float theta = 0.0f;
-
-	for (int i = 0; i < 180; i++)
-	{
-		theta = i * PI / 180;
-		float point_x = center.x + radius * cos(theta);
-		float point_y = center.y + radius * sin(theta);
-		m_vertices.push_back(Vertex(point_x, point_y, center.z));
-	}
-}
-
-void Mesh::Debug()
-{
-	for (Vertex i : m_vertices)
-	{
-		i.Debug();
-	}
-}
-
-void Mesh::Update()
-{
-	m_resolution = m_vertices.size();
-
-}
-
-void Mesh::Rotate(float _angle, Axis _axis)
-{
-	for (Vertex& i : m_vertices)
-	{
-		i.Rotate(_angle, _axis);
-	}
-}
-
-void Mesh::AddVertex(Vertex vertex)
-{
-	m_vertices.push_back(vertex);
-}
-
-void Mesh::Clear()
-{
-	m_vertices.clear();
-}
-

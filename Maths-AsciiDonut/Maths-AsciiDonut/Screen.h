@@ -1,27 +1,30 @@
-#include "Settings.h"
-#include "Mesh.h"
-
+#pragma once
 #include <vector>
+
+class Settings;
+class Mesh;
+struct Vertex;
 
 class Screen
 {
 public:
-	Screen() = default;
-	Screen(const Settings&);
-	~Screen() = default;
-
-	void Clear();
-	void Draw(const Mesh&);
-
-	void Display(int width, int height);
-	void Display();
+    Screen(Settings const& settings);
+    void Display() const;
+    void Display(Mesh const& mesh);
 
 private:
-	Vertex MakeProjection(const Vertex& vertex);
-	void Display(const Mesh& mesh);
-	Settings m_settings;
+    void _ProjectMesh(Mesh const& mesh);
+    void _ProjectInCenterScreenSpace(Vertex& vertex);
+    void _ProjectInTopLeftScreenSpace(Vertex& vertex);
+    bool _IsVertexInScreen(int u, int v);
 
-
-	friend class Mesh;
+private:
+    int m_width;
+    int m_height;
+    float m_zPosition;
+    char m_background;
+    char m_meshProjection;
+    float m_meshZPosition;
+    std::vector<char> m_pixels;
+    std::vector<float> m_oozBuffer;
 };
-

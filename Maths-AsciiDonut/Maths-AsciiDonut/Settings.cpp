@@ -1,103 +1,68 @@
 #include "Settings.h"
-#include <iostream>
+#include <string>
 
-Settings::Settings(int argc, char** argv) :
-	m_width(100),
-	m_height(20),
-	m_resolution(32),
-	m_screenPosition(3.33f),
-	m_meshPosition(5.0f),
-	m_background('.'),
-	m_meshPixel('X')
+Settings::Settings(int argc, char** argv)
+    : m_screenWidth(100)
+    , m_screenHeight(20)
+    , m_screenBackground(' ')
+    , m_screenMeshProjection('X')
+    , m_screenPosition(3.33f)
+    , m_meshResolution(32)
+    , m_meshPosition(5.f)
 {
-	if (argc < 5)
-	{
-		std::cout << "Not enough parameters to configure width and height of the display, assigning default values\n";
-		return;
-	}
-	for (int i = 1; i < argc; i++)
-	{
-		if (argv[i] == "-w" && (i + 1) <= argc)
-		{	// SCREEN WIDTH
-			m_width = atoi(argv[i + 1]);
-			i++;
-		}
-		if (argv[i] == "-h" && (i + 1) <= argc)
-		{	// SCREEN HEIGHT
-			m_height = atoi(argv[i + 1]);
-			i++;
-		}
-		if (argv[i] == "-r" && (i + 1) <= argc)
-		{	// MESH RESOLUTION
-			m_resolution = atoi(argv[i + 1]);
-			i++;
-		}
-		if (argv[i] == "-s" && (i + 1) <= argc)
-		{	// SCREEN POSITION
-			m_screenPosition = atof(argv[i + 1]);
-			i++;
-		}
-		if (argv[i] == "-m" && (i + 1) <= argc)
-		{	// MESH DISTANCE FROM SCREEN
-			m_meshPosition = atof(argv[i + 1]);
-			i++;
-		}
-		
-		// DisplayedChar
-		if (argv[i] == "-b" && (i + 1) <= argc)
-		{	// BACKGROUND
-			m_background = argv[i + 1][0];
-			i++;
-		}
-		if (argv[i] == "-p" && (i + 1) <= argc)
-		{	// MESH PIXELS
-			m_meshPixel = argv[i + 1][0];
-			i++;
-		}
-	}
+    _ParseArguments(argc, argv);
 }
 
-int Settings::GetWidth()
+void Settings::_ParseArguments(int argc, char** argv)
 {
-	return m_width;
-}
-
-int Settings::GetHeight()
-{
-	return m_height;
-}
-
-int Settings::GetResolution()
-{
-	return m_resolution;
-}
-
-float Settings::GetScreenPosition()
-{
-	return m_screenPosition;
-}
-
-float Settings::GetMeshPosition()
-{
-	return m_meshPosition;
-}
-
-void Settings::SetBackgroundChar(char _c)
-{
-	m_background = _c;
-}
-
-char Settings::GetBackgroundChar()
-{
-	return m_background;
-}
-
-void Settings::SetMeshPixelChar(char _c)
-{
-	m_meshPixel = _c;
-}
-
-char Settings::GetMeshPixelChar()
-{
-	return m_meshPixel;
+    // Elegant solution from @T.Rosselet
+    for (int i = 1; i < argc; i++) //i starts at 1 because command line arguments start with argv[1] (argv[0] is the name of the exe)
+    {
+        std::string arg = argv[i];
+        if (arg == "-w" && i + 1 < argc)
+        {
+            m_screenWidth = std::atoi(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-h" && i + 1 < argc)
+        {
+            m_screenHeight = std::atoi(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-b" && i + 1 < argc)
+        {
+            m_screenBackground = argv[i + 1][0];
+            i++;
+        }
+        else if (arg == "-p" && i + 1 < argc)
+        {
+            m_screenMeshProjection = argv[i + 1][0];
+            i++;
+        }
+        else if (arg == "-s" && i + 1 < argc)
+        {
+            m_screenPosition = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-r" && i + 1 < argc)
+        {
+            m_meshResolution = std::atoi(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-m" && i + 1 < argc)
+        {
+            m_meshPosition = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-x" && i + 1 < argc)
+        {
+            m_meshRotationXAngle = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-f" && i + 1 < argc)
+        {
+            m_frameDuration = std::atof(argv[i + 1]);
+            i++;
+        }
+    }
 }

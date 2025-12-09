@@ -1,48 +1,42 @@
 #pragma once
+#include <cstdio>
 #include <vector>
 
-enum class Axis : char
+class Settings;
+
+enum class Axis
 {
-	X = 'X',
-	Y = 'Y',
-	Z = 'Z'
+    X,
+    Y,
+    Z
 };
 
 struct Vertex
 {
-	float x, y, z;
-	Vertex(float, float, float);
-	void Debug();
-	void Rotate(float _angle, Axis _axis);
-};
+    void Debug() const { std::printf("[x=%5.2f, y=%5.2f, z=%5.2f]\n", x, y, z); }
+    float x;
+    float y;
+    float z;
 
-////////////////////////////
+    void Rotate(Axis _axis, float _angle);
+};
 
 class Mesh
 {
 public:
-	Mesh(int resolution);
-	//Mesh(const std::vector<Vertex>&);
-
-	~Mesh() = default;
-
-	void MakeCircle(float radius, const Vertex&);
-	void MakeHalfCircle(float radius, const Vertex&);
-	void MakeRectangle(float width, float height);
-	void MakeSquare(float size);
-	void GenerateTorus(float _majorRadius, float _minorRadius);
-		 
-	void MakeCube(float size);
-
-	void Debug();
-	void Update();
-	void Rotate(float _angle, Axis _axis);
-
-	void AddVertex(Vertex vertex);
-	void Clear();
+    Mesh(Settings const& settings);
+    std::vector<Vertex> const& GetVertices() const { return m_vertices; }
+    void GenerateCircle(float radius);
+    void GenerateHalfCircle(float radius);
+    void GenerateRectangle(float width, float height);
+    void GenerateSquare(float side);
+    void GenerateTorus(float _majorRadius, float _minorRadius);
+    void Debug() const;
 
 private:
-	std::vector<Vertex> m_vertices;
-	int m_resolution;
-};
+    void _GenerateSector(float radius, float angle);
 
+private:
+    std::vector<Vertex> m_vertices;
+    int m_resolution;
+};
