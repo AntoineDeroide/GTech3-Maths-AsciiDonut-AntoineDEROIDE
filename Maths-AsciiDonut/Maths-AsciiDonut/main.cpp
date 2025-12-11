@@ -31,17 +31,19 @@ void SetCursorVisible(bool visible)
     }
 }
 
-void HandleExit(int _signum)
+void OnKill(int _signum)
 {
     std::cout << "Liam ce gros bg :)\n";
 
+
+    SetCursorVisible(true);
     exit(_signum);
 }
 
 
 int main(int argc, char** argv)
 {
-    signal(SIGINT, HandleExit);
+    signal(SIGINT, OnKill);
 
     InitConsole();
     ClearConsole();
