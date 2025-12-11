@@ -1,4 +1,5 @@
 #include <iostream>
+#include <signal.h>
 #include <windows.h> // For console settings
 #include "Settings.h"
 #include "Screen.h"
@@ -30,9 +31,18 @@ void SetCursorVisible(bool visible)
     }
 }
 
+void HandleExit(int _signum)
+{
+    std::cout << "Liam ce gros bg :)\n";
+
+    exit(_signum);
+}
+
 
 int main(int argc, char** argv)
 {
+    signal(SIGINT, HandleExit);
+
     InitConsole();
     ClearConsole();
     SetCursorVisible(false);
@@ -58,7 +68,9 @@ int main(int argc, char** argv)
 
     while (true)
     {
-        mesh.Rotate(Axis::Y, settings.GetMeshRotationXPerAngle());
+        mesh.Rotate(Axis::Y, settings.GetMeshRotationYPerAngle());
+        mesh.Rotate(Axis::X, settings.GetMeshRotationXPerAngle());
+        mesh.Rotate(Axis::Z, settings.GetMeshRotationZPerAngle());
         screen.Display(mesh);
         Sleep(settings.GetFrameDuration() / 1000);
         ClearConsole();

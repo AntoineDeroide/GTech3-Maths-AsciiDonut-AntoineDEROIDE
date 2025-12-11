@@ -10,6 +10,8 @@ public:
     int GetMeshResolution() const { return m_meshResolution; }
     float GetMeshPosition() const { return m_meshPosition; }
     float GetMeshRotationXPerAngle() const { return m_meshRotationXAngle; }
+    float GetMeshRotationYPerAngle() const { return m_meshRotationYAngle; }
+    float GetMeshRotationZPerAngle() const { return m_meshRotationZAngle; }
     float GetFrameDuration() const { return m_frameDuration; }
 
 private:
@@ -23,6 +25,8 @@ private:
     char m_screenMeshProjection;
     int m_meshResolution;
     float m_meshPosition;
-    float m_meshRotationXAngle;
     float m_frameDuration; // in microseconds
+    float m_meshRotationXAngle;
+    float m_meshRotationYAngle;
+    float m_meshRotationZAngle;
 };

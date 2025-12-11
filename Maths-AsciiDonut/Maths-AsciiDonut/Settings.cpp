@@ -10,7 +10,9 @@ Settings::Settings(int argc, char** argv) :
     m_meshResolution(32), 
     m_meshPosition(5.f), 
     m_meshRotationXAngle(0.02f),
-    m_frameDuration(100000)
+    m_frameDuration(100000),
+    m_meshRotationYAngle(0.04f),
+    m_meshRotationZAngle(0.0f)
 {
     _ParseArguments(argc, argv);
 }
@@ -64,6 +66,16 @@ void Settings::_ParseArguments(int argc, char** argv)
         else if (arg == "-f" && i + 1 < argc)
         {
             m_frameDuration = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-y" && i + 1 < argc)
+        {
+            m_meshRotationYAngle = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-z" && i + 1 < argc)
+        {
+            m_meshRotationZAngle = std::atof(argv[i + 1]);
             i++;
         }
     }
