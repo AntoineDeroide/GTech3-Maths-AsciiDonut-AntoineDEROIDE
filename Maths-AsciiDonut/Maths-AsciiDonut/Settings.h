@@ -24,5 +24,5 @@ private:
     int m_meshResolution;
     float m_meshPosition;
     float m_meshRotationXAngle;
-    float m_frameDuration; // in ms
+    float m_frameDuration; // in microseconds
 };

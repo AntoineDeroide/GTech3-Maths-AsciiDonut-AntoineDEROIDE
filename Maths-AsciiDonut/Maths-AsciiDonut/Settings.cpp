@@ -1,14 +1,16 @@
 #include "Settings.h"
 #include <string>
 
-Settings::Settings(int argc, char** argv)
-    : m_screenWidth(100)
-    , m_screenHeight(20)
-    , m_screenBackground(' ')
-    , m_screenMeshProjection('X')
-    , m_screenPosition(3.33f)
-    , m_meshResolution(32)
-    , m_meshPosition(5.f)
+Settings::Settings(int argc, char** argv) : 
+    m_screenWidth(100),
+    m_screenHeight(20), 
+    m_screenBackground(' '), 
+    m_screenMeshProjection('X'), 
+    m_screenPosition(3.33f), 
+    m_meshResolution(32), 
+    m_meshPosition(5.f), 
+    m_meshRotationXAngle(0.02f),
+    m_frameDuration(100000)
 {
     _ParseArguments(argc, argv);
 }

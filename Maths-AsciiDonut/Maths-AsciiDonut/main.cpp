@@ -30,6 +30,7 @@ void SetCursorVisible(bool visible)
     }
 }
 
+
 int main(int argc, char** argv)
 {
     InitConsole();
@@ -39,7 +40,7 @@ int main(int argc, char** argv)
     Screen screen(settings);
     screen.Display();
     Mesh mesh(settings);
-    mesh.GenerateRectangle(10.f, 20.f);
+    /*mesh.GenerateRectangle(10.f, 20.f);
     std::cout << "Rectangle 10x20:" << std::endl;
     screen.Display(mesh);
     mesh.GenerateSquare(20.f);
@@ -50,10 +51,19 @@ int main(int argc, char** argv)
     screen.Display(mesh);
     mesh.GenerateHalfCircle(15.f);
     std::cout << "Half Circle radius 15:" << std::endl;
-    screen.Display(mesh);
+    screen.Display(mesh);*/
     mesh.GenerateTorus(4.0f, 0.9);
     std::cout << "Torus Major 4, minor 0.9:" << std::endl;
     screen.Display(mesh);
+
+    while (true)
+    {
+        mesh.Rotate(Axis::Y, settings.GetMeshRotationXPerAngle());
+        screen.Display(mesh);
+        Sleep(settings.GetFrameDuration() / 1000);
+        ClearConsole();
+    }
+
     return 0;
 }
 

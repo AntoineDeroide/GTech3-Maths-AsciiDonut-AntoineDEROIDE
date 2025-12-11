@@ -33,6 +33,8 @@ public:
     void GenerateTorus(float _majorRadius, float _minorRadius);
     void Debug() const;
 
+    void Rotate(Axis _axis, float _angle);
+
 private:
     void _GenerateSector(float radius, float angle);
 
