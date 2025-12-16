@@ -46,9 +46,12 @@ void Mesh::GenerateRectangle(float width, float height)
     {
         for (int j = 0; j < m_resolution; j++)
         {
-            m_vertices[m_resolution * i + j].x = (1.f * i / (m_resolution - 1) - 0.5f) * width;
-            m_vertices[m_resolution * i + j].y = (1.f * j / (m_resolution - 1) - 0.5f) * height;
-            m_vertices[m_resolution * i + j].z = 0.f;
+            Vertex& current = m_vertices[m_resolution * i + j];
+
+            current.x = (1.f * i / (m_resolution - 1) - 0.5f) * width;
+            current.y = (1.f * j / (m_resolution - 1) - 0.5f) * height;
+            current.z = 0.f;
+
         }
     }
 }
@@ -91,10 +94,24 @@ void Mesh::_GenerateSector(float radius, float angle)
         float r = (radius * i) / (m_resolution - 1);
         for (int j = 0; j < m_resolution; j++)
         {
+            Vertex& current = m_vertices[m_resolution * i + j];
             float theta = (angle * j) / (m_resolution - 1);
-            m_vertices[m_resolution * i + j].x = r * std::cos(theta);
-            m_vertices[m_resolution * i + j].y = r * std::sin(theta);
-            m_vertices[m_resolution * i + j].z = 0.f;
+
+            current.x = r * std::cos(theta);
+            current.y = r * std::sin(theta);
+            current.z = 0.f;
+
+            // La normale fuit le centre de la figure ? Ou alors strictement perpendiculaire a la surface ?
+            // Calcul de la normale : (x,y,z) / N avec N == sqrt(x**2 + y**2 + z**2)
+            float normal = sqrtf(
+                current.x * current.x + 
+                current.y * current.y + 
+                current.z * current.z
+            );
+            current.n.x = current.x / normal;
+            current.n.y = current.y / normal;
+            current.n.z = current.z / normal;
+            // Ici, ca peut fonctionner si le cercle est centre a l'origine
         }
     }
 }
