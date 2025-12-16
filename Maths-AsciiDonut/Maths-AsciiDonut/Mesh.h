@@ -18,6 +18,13 @@ struct Vertex
     float y;
     float z;
 
+    struct // normal
+    {
+        float x;
+        float y;
+        float z;
+    } n;
+
     void Rotate(Axis _axis, float _angle);
 };
 
