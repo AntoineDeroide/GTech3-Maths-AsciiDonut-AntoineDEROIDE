@@ -4,6 +4,15 @@
 
 constexpr float PI = 3.14159265f;
 
+//float ScalarProduct(Vertex _first, Vertex _second)
+//{
+//    return (_first.x * _second.x +
+//            _first.y * _second.y +
+//            _first.z * _second.z);
+//}
+
+
+
 Mesh::Mesh(Settings const& settings)
     : m_resolution(settings.GetMeshResolution())
 {
@@ -65,9 +74,9 @@ void Mesh::GenerateRectangle(float width, float height)
             current.z = 0.f;
 
             // normale
-            current.n.x = 0;
-            current.n.y = 0;
-            current.n.z = 1;
+            current.n.x = 0.0f;
+            current.n.y = 0.0f;
+            current.n.z = -1.0f;
         }
     }
 }
@@ -95,7 +104,7 @@ void Mesh::GenerateTorus(float _majorRadius, float _minorRadius) // Major = dist
             // normale
             current.n.x = std::cos(angleZ);
             current.n.y = std::sin(angleZ);
-            current.n.z = 0;
+            current.n.z = 0.0f;
             
             current.Rotate(Axis::Z, angleY);
         }
@@ -123,12 +132,12 @@ void Mesh::_GenerateSector(float radius, float angle)
 
             current.x = r * std::cos(theta);
             current.y = r * std::sin(theta);
-            current.z = 0.f;
+            current.z = 0.0f;
 
             // normale
             current.n.x = std::cos(theta);
             current.n.y = std::sin(theta);
-            current.n.z = 0;
+            current.n.z = 0.0f;
         }
     }
 }

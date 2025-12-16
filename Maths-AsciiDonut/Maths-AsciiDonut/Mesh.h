@@ -23,7 +23,7 @@ struct Vertex
         float x;
         float y;
         float z;
-    } n;
+    } n; 
 
     void Rotate(Axis _axis, float _angle);
 };
