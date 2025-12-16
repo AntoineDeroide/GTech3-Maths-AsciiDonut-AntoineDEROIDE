@@ -17,14 +17,26 @@ void Vertex::Rotate(Axis _axis, float _angle)
     case(Axis::X):
         y = temp.y * cos(_angle) - temp.z * sin(_angle);
         z = temp.y * sin(_angle) + temp.z * cos(_angle);
+
+        // normale
+        n.y = temp.n.y * cos(_angle) - temp.n.z * sin(_angle);
+        n.z = temp.n.y * sin(_angle) + temp.n.z * cos(_angle);
         break;
     case(Axis::Y):
         x = temp.x * cos(_angle) + temp.z * sin(_angle);
         z = (-temp.x * sin(_angle)) + temp.z * cos(_angle);
+
+        // normale
+        n.x = temp.n.x * cos(_angle) + temp.n.z * sin(_angle);
+        n.z = (-temp.n.x * sin(_angle)) + temp.n.z * cos(_angle);
         break;
     case(Axis::Z):
         x = temp.x * cos(_angle) - temp.y * sin(_angle);
         y = temp.x * sin(_angle) + temp.y * cos(_angle);
+
+        // normale
+        n.x = temp.n.x * cos(_angle) - temp.n.y * sin(_angle);
+        n.y = temp.n.x * sin(_angle) + temp.n.y * cos(_angle);
         break;
     }
 }
@@ -52,6 +64,10 @@ void Mesh::GenerateRectangle(float width, float height)
             current.y = (1.f * j / (m_resolution - 1) - 0.5f) * height;
             current.z = 0.f;
 
+            // normale
+            current.n.x = 0;
+            current.n.y = 0;
+            current.n.z = 1;
         }
     }
 }
@@ -70,10 +86,18 @@ void Mesh::GenerateTorus(float _majorRadius, float _minorRadius) // Major = dist
         angleY = (2 * PI * i) / (m_resolution - 1);
         for (int j = 0; j < m_resolution; j++)
         {
+            Vertex& current = m_vertices[m_resolution * i + j];
+
             angleZ = (2 * PI * j) / (m_resolution - 1);
-            m_vertices[m_resolution * i + j].x = _majorRadius + _minorRadius * cos(angleZ);
-            m_vertices[m_resolution * i + j].y = _minorRadius * sin(angleZ);
-            m_vertices[m_resolution * i + j].Rotate(Axis::Z, angleY);
+            current.x = _majorRadius + _minorRadius * cos(angleZ);
+            current.y = _minorRadius * sin(angleZ);
+
+            // normale
+            current.n.x = std::cos(angleZ);
+            current.n.y = std::sin(angleZ);
+            current.n.z = 0;
+            
+            current.Rotate(Axis::Z, angleY);
         }
     }
 }
@@ -101,17 +125,10 @@ void Mesh::_GenerateSector(float radius, float angle)
             current.y = r * std::sin(theta);
             current.z = 0.f;
 
-            // La normale fuit le centre de la figure ? Ou alors strictement perpendiculaire a la surface ?
-            // Calcul de la normale : (x,y,z) / N avec N == sqrt(x**2 + y**2 + z**2)
-            float normal = sqrtf(
-                current.x * current.x + 
-                current.y * current.y + 
-                current.z * current.z
-            );
-            current.n.x = current.x / normal;
-            current.n.y = current.y / normal;
-            current.n.z = current.z / normal;
-            // Ici, ca peut fonctionner si le cercle est centre a l'origine
+            // normale
+            current.n.x = std::cos(theta);
+            current.n.y = std::sin(theta);
+            current.n.z = 0;
         }
     }
 }
