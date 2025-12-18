@@ -1,6 +1,7 @@
 #include <cmath>
 #include "Mesh.h"
 #include "Settings.h"
+#include "Light.h"
 
 constexpr float PI = 3.14159265f;
 
@@ -48,6 +49,15 @@ void Vertex::Rotate(Axis _axis, float _angle)
         n.y = temp.n.x * sin(_angle) + temp.n.y * cos(_angle);
         break;
     }
+}
+
+float Vertex::ComputeIllumination(const Light& _light) const
+{
+    return (
+        x * _light.GetX() + 
+        y * _light.GetY() + 
+        z * _light.GetZ()
+        );
 }
 
 void Mesh::GenerateCircle(float radius)
@@ -147,5 +157,13 @@ void Mesh::Rotate(Axis _axis, float _angle)
     for (Vertex& i : m_vertices)
     {
         i.Rotate(_axis, _angle);
+    }
+}
+
+void Mesh::ComputeIllumination(const Light& _light)
+{
+    for (Vertex& i : m_vertices)
+    {
+        i.ComputeIllumination(_light);
     }
 }

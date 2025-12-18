@@ -28,27 +28,39 @@ void Screen::Display() const
     }
 }
 
-void Screen::Display(Mesh const& mesh)
+void Screen::Display(Mesh const& mesh, Light const& _light)
 {
     std::fill(m_pixels.begin(), m_pixels.end(), m_background);
-    _ProjectMesh(mesh);
+    _ProjectMesh(mesh, _light);
     Display();
 }
 
-void Screen::_ProjectMesh(Mesh const& mesh)
+void Screen::_ProjectMesh(Mesh const& mesh, Light const& _light)
 {
     std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
     for (Vertex vertex : mesh.GetVertices())
     {
         _ProjectInCenterScreenSpace(vertex);
         _ProjectInTopLeftScreenSpace(vertex);
+
         int u = std::round(vertex.x);
         int v = std::round(vertex.y);
         float ooz = 1.f / vertex.z;
+        
         if (_IsVertexInScreen(u, v) && ooz > m_oozBuffer[v * m_width + u])
         {
+            float L = vertex.ComputeIllumination(_light);
+
+            if (L > 0.0f)
+            {
+                m_pixels[v * m_width + u] = ".,-~:;=!*#$@"[static_cast<int>(L*12)];
+            }
+            else
+            {
+                m_pixels[v * m_width + u] = '.';
+            }
+
             m_oozBuffer[v * m_width + u] = ooz;
-            m_pixels[v * m_width + u] = m_meshProjection;
         }
     }
 }

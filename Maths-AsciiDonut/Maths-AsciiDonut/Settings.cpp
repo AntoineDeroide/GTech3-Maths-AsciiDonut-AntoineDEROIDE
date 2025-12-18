@@ -78,5 +78,21 @@ void Settings::_ParseArguments(int argc, char** argv)
             m_meshRotationZAngle = std::atof(argv[i + 1]);
             i++;
         }
+        // Light
+        else if (arg == "-lx" && i + 1 < argc)
+        {
+            m_lightXDir = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-ly" && i + 1 < argc)
+        {
+            m_lightYDir = std::atof(argv[i + 1]);
+            i++;
+        }
+        else if (arg == "-lz" && i + 1 < argc)
+        {
+            m_lightZDir = std::atof(argv[i + 1]);
+            i++;
+        }
     }
 }
