@@ -1,9 +1,11 @@
 #include <iostream>
 #include <signal.h>
 #include <windows.h> // For console settings
+
 #include "Settings.h"
 #include "Screen.h"
 #include "Mesh.h"
+#include "Light.h"
 
 void InitConsole()
 {
@@ -48,11 +50,15 @@ int main(int argc, char** argv)
     InitConsole();
     ClearConsole();
     SetCursorVisible(false);
+
     Settings settings(argc, argv);
     Screen screen(settings);
+    Light light(settings);
+
     screen.Display();
     Mesh mesh(settings);
-    /*mesh.GenerateRectangle(10.f, 20.f);
+    /*
+    mesh.GenerateRectangle(10.f, 20.f);
     std::cout << "Rectangle 10x20:" << std::endl;
     screen.Display(mesh);
     mesh.GenerateSquare(20.f);
@@ -63,17 +69,18 @@ int main(int argc, char** argv)
     screen.Display(mesh);
     mesh.GenerateHalfCircle(15.f);
     std::cout << "Half Circle radius 15:" << std::endl;
-    screen.Display(mesh);*/
+    screen.Display(mesh);
+    */
     mesh.GenerateTorus(4.0f, 0.9);
     std::cout << "Torus Major 4, minor 0.9:" << std::endl;
-    screen.Display(mesh);
+    screen.Display(mesh, light);
 
     while (true)
     {
         mesh.Rotate(Axis::Y, settings.GetMeshRotationYPerAngle());
         mesh.Rotate(Axis::X, settings.GetMeshRotationXPerAngle());
         mesh.Rotate(Axis::Z, settings.GetMeshRotationZPerAngle());
-        screen.Display(mesh);
+        screen.Display(mesh, light);
         Sleep(settings.GetFrameDuration() / 1000);
         ClearConsole();
     }

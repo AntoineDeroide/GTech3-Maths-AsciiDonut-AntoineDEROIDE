@@ -54,9 +54,9 @@ void Vertex::Rotate(Axis _axis, float _angle)
 float Vertex::ComputeIllumination(const Light& _light) const
 {
     return (
-        x * _light.GetX() + 
-        y * _light.GetY() + 
-        z * _light.GetZ()
+            n.x * _light.GetNormalizedLight().n.x + 
+            n.y * _light.GetNormalizedLight().n.y + 
+            n.z * _light.GetNormalizedLight().n.z
         );
 }
 
@@ -160,10 +160,10 @@ void Mesh::Rotate(Axis _axis, float _angle)
     }
 }
 
-void Mesh::ComputeIllumination(const Light& _light)
-{
-    for (Vertex& i : m_vertices)
-    {
-        i.ComputeIllumination(_light);
-    }
-}
+//void Mesh::ComputeIllumination(const Light& _light)
+//{
+//    for (Vertex& i : m_vertices)
+//    {
+//        i.ComputeIllumination(_light);
+//    }
+//}

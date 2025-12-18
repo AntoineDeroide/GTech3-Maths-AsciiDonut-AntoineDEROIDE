@@ -1,20 +1,16 @@
 #pragma once
+#include "Mesh.h"
 
 class Settings;
 
 class Light
 {
-	float x, y, z;
-	float nx, ny, nz;
-
 public:
-	Light(Settings const& _settings);
-	~Light() = default;
+    Light(Settings const& settings);
+    Vertex const& GetNormalizedLight() const { return m_lightVertex; }
+    void Debug() const { m_lightVertex.Debug(); }
 
-	float GetX() const { return x; }
-	float GetY() const { return y; }
-	float GetZ() const { return z; }
-
-	float GetNormalizedLight();
+private:
+    Vertex m_lightVertex;
 };
 

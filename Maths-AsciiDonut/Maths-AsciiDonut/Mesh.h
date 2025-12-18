@@ -45,7 +45,7 @@ public:
     void Debug() const;
 
     void Rotate(Axis _axis, float _angle);
-    void ComputeIllumination(const Light& _light);
+    //void ComputeIllumination(const Light& _light);
 
 private:
     void _GenerateSector(float radius, float angle);

@@ -3,6 +3,7 @@
 
 class Settings;
 class Mesh;
+class Light;
 struct Vertex;
 
 class Screen
