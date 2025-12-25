@@ -57,29 +57,20 @@ int main(int argc, char** argv)
 
     screen.Display();
     Mesh mesh(settings);
-    /*
-    mesh.GenerateRectangle(10.f, 20.f);
-    std::cout << "Rectangle 10x20:" << std::endl;
-    screen.Display(mesh);
-    mesh.GenerateSquare(20.f);
-    std::cout << "Square 20x20:" << std::endl;
-    screen.Display(mesh);
-    mesh.GenerateCircle(15.f);
-    std::cout << "Circle radius 15:" << std::endl;
-    screen.Display(mesh);
-    mesh.GenerateHalfCircle(15.f);
-    std::cout << "Half Circle radius 15:" << std::endl;
-    screen.Display(mesh);
-    */
-    mesh.GenerateTorus(4.0f, 0.9);
-    std::cout << "Torus Major 4, minor 0.9:" << std::endl;
+    
+    // TORE
+    /*mesh.GenerateTorus(4.0f, 0.9);
+    std::cout << "Torus Major 4, minor 0.9:" << std::endl;*/
+    
+    // CARRE
+    mesh.GenerateSquare(4.0f);
     screen.Display(mesh, light);
 
     while (true)
     {
         mesh.Rotate(Axis::Y, settings.GetMeshRotationYPerAngle());
-        mesh.Rotate(Axis::X, settings.GetMeshRotationXPerAngle());
-        mesh.Rotate(Axis::Z, settings.GetMeshRotationZPerAngle());
+        //mesh.Rotate(Axis::X, settings.GetMeshRotationXPerAngle());
+        //mesh.Rotate(Axis::Z, settings.GetMeshRotationZPerAngle());
         screen.Display(mesh, light);
         Sleep(settings.GetFrameDuration() / 1000);
         ClearConsole();

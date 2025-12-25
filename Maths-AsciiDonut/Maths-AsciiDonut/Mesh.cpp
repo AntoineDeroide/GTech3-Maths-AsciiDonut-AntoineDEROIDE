@@ -121,6 +121,13 @@ void Mesh::GenerateTorus(float _majorRadius, float _minorRadius) // Major = dist
     }
 }
 
+void Mesh::GenerateGCLogo(float size)
+{
+
+
+
+}
+
 void Mesh::Debug() const
 {
     for (Vertex const& vertex : m_vertices)

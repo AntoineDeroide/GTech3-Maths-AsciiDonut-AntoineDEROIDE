@@ -42,6 +42,7 @@ public:
     void GenerateRectangle(float width, float height);
     void GenerateSquare(float side);
     void GenerateTorus(float _majorRadius, float _minorRadius);
+    void GenerateGCLogo(float size);
     void Debug() const;
 
     void Rotate(Axis _axis, float _angle);
