@@ -11,6 +11,48 @@ File::File(std::string _path) :
 	// code...
 }
 
+vector<vector<char>> File::GenerateArray(std::string _input, unsigned int _rowLength, unsigned int _colLength)
+{
+	vector<vector<char>> toReturn = vector<vector<char>>();
+	int size = _input.size();
+
+	if (size < (_rowLength * _colLength))
+	{
+		cout << "Failed to generate array : input is too short !\n";
+		return vector<vector<char>>();
+	}
+
+	for (int i = 0; i < _rowLength; i++)
+	{
+		vector<char> currentRow = vector<char>();
+		for (int j = 0; j < _colLength; j++)
+		{
+			currentRow.push_back(_input[i * _rowLength + j]);
+		}
+		toReturn.push_back(currentRow);
+	}
+
+	return toReturn;
+}
+vector<vector<char>> File::GenerateArray(File* _pFile, unsigned int _rowLength, unsigned int _colLength)
+{
+	if (_pFile->IsOpen() == false and _pFile->Open() == false)
+	{
+		cout << "Failed to generate array : file failed its opening !\n";
+
+		return vector<vector<char>>();
+	}
+
+	vector<vector<char>> toReturn = GenerateArray(_pFile->Read());
+
+	if (toReturn == vector<vector<char>>())
+	{
+		cout << "Failed to generate array for file " << _pFile->m_path << " | file is too short !\n";
+	}
+
+	return toReturn;
+}
+
 bool File::Open()
 {
 	if (m_path == "")

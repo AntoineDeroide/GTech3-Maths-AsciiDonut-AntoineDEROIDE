@@ -1,12 +1,17 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
 class File
 {
 public:
+	// Static method to return a 50x50 array with characters to print
+	static vector<vector<char>> GenerateArray(File* _pFile, unsigned int _rowLength = 50, unsigned int _colLength = 50);
+	static vector<vector<char>> GenerateArray(std::string _input, unsigned int _rowLength = 50, unsigned int _colLength = 50);
+
 	File(std::string path = "");
 
 	std::string Read();
@@ -15,7 +20,7 @@ public:
 	
 	void SetPath(std::string path) { m_path = path; };
 	
-	int Size(); // TODO
+	int Size();
 	bool IsOpen();
 
 private:
@@ -27,6 +32,4 @@ private:
 	
 	bool Open();
 	void Close();
-
-
 };
