@@ -36,6 +36,7 @@ class Mesh
 {
 public:
     Mesh(Settings const& settings);
+    Mesh(std::vector<Vertex> const& vertices, Settings const& settings);
     std::vector<Vertex> const& GetVertices() const { return m_vertices; }
     void GenerateCircle(float radius);
     void GenerateHalfCircle(float radius);
@@ -44,6 +45,8 @@ public:
     void GenerateTorus(float _majorRadius, float _minorRadius);
     void GenerateGCLogo(float size);
     void Debug() const;
+
+    void Move(float x, float y, float z);
 
     void Rotate(Axis _axis, float _angle);
     //void ComputeIllumination(const Light& _light);

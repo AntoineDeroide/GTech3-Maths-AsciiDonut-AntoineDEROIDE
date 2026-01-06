@@ -19,6 +19,11 @@ Mesh::Mesh(Settings const& settings)
 {
 }
 
+Mesh::Mesh(std::vector<Vertex> const& vertices, Settings const& settings) : 
+    m_vertices(vertices), m_resolution(settings.GetMeshResolution())
+{
+}
+
 void Vertex::Rotate(Axis _axis, float _angle)
 {
     Vertex temp = *this;
@@ -133,6 +138,16 @@ void Mesh::Debug() const
     for (Vertex const& vertex : m_vertices)
     {
         vertex.Debug();
+    }
+}
+
+void Mesh::Move(float x, float y, float z)
+{
+    for (int i = 0; i < m_vertices.size(); i++)
+    {
+        m_vertices[i].x += x;
+        m_vertices[i].y += y;
+        m_vertices[i].z += z;
     }
 }
 

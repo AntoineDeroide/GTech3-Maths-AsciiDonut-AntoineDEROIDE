@@ -1,35 +1,40 @@
-#pragma once
+#ifndef FILE_H
+#define FILE_H
 
 #include <string>
 #include <vector>
+#include "Mesh.h"
 
-using namespace std;
 
 class File
 {
+	std::string m_path;
+
+	std::fstream* m_pFile;
+	unsigned int m_cursor;
+	bool m_isOpen;
+
+	bool Open();
+	void Close();
+
 public:
 	// Static method to return a 50x50 array with characters to print
-	static vector<vector<char>> GenerateArray(File* _pFile, unsigned int _rowLength = 50, unsigned int _colLength = 50);
-	static vector<vector<char>> GenerateArray(std::string _input, unsigned int _rowLength = 50, unsigned int _colLength = 50);
+	//static std::vector<std::vector<char>> GenerateArray(File* pFile, std::string path);
+	//static std::vector<std::vector<char>> GenerateArray(std::string input, unsigned int rowLength = 50, unsigned int colLength = 50);
 
-	File(std::string path = "");
+	std::vector<Vertex> LoadFileImage();
+
+	//File(std::string path = "");
+	File(std::string path);
 
 	std::string Read();
 
-	bool Save(std::string path, File** dst);
-	
-	void SetPath(std::string path) { m_path = path; };
-	
+
+  	//bool Save(std::string path, File** dst); // c'est quoi l'utilite de save dans le contexte du projet ?
+	//void SetPath(std::string path) { m_path = path; }; // t'es rebou mon reuf 
+
 	int Size();
 	bool IsOpen();
-
-private:
-	std::string m_path;
-
-	fstream* m_pFile;
-	unsigned int m_cursor;
-	bool m_isOpen;
-	
-	bool Open();
-	void Close();
 };
+
+#endif // FILE_H

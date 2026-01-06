@@ -13,6 +13,10 @@ public:
     void Display() const;
     void Display(Mesh const& mesh, Light const& _light);
 
+    void Clear() const;
+    void SetCursorVisible(bool visible);
+
+
 private:
     void _ProjectMesh(Mesh const& mesh, Light const& _light);
     void _ProjectInCenterScreenSpace(Vertex& vertex);

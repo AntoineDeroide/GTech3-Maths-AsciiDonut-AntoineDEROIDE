@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h> // For console settings
 #include <cmath>
 #include "Screen.h"
 #include "Settings.h"
@@ -14,6 +15,10 @@ Screen::Screen(Settings const& settings)
     , m_pixels(m_width* m_height, '.')
     , m_oozBuffer(m_width* m_height, 0.f)
 {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode;
+    GetConsoleMode(hConsole, &mode);
+    SetConsoleMode(hConsole, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING);
 }
 
 void Screen::Display() const
@@ -35,32 +40,47 @@ void Screen::Display(Mesh const& mesh, Light const& _light)
     Display();
 }
 
+void Screen::Clear() const
+{
+    //std::cout << "\x1b[2J"; // Remove all characters in console
+    std::cout << "\x1b[H"; // Set cursor pos to "home" position (0,0)
+}
+
+void Screen::SetCursorVisible(bool visible)
+{
+    if (visible)
+    {
+        std::cout << "\x1b[?25h"; // Make cursor visible
+    }
+    else
+    {
+        std::cout << "\x1b[?25l"; // Make cursor invisible
+    }
+}
+
 void Screen::_ProjectMesh(Mesh const& mesh, Light const& _light)
 {
-    std::fill(m_oozBuffer.begin(), m_oozBuffer.end(), 0.f);
     for (Vertex vertex : mesh.GetVertices())
     {
-        _ProjectInCenterScreenSpace(vertex);
         _ProjectInTopLeftScreenSpace(vertex);
 
         int u = std::round(vertex.x);
         int v = std::round(vertex.y);
-        float ooz = 1.f / vertex.z;
         
-        if (_IsVertexInScreen(u, v) && ooz > m_oozBuffer[v * m_width + u])
+        if (_IsVertexInScreen(u, v))
         {
             float L = vertex.ComputeIllumination(_light);
 
             if (L > 0.0f)
             {
-                m_pixels[v * m_width + u] = ".,-~:;=!*#$@"[static_cast<int>(L*12)];
+                m_pixels[v * m_width + u] = 'G';
             }
             else
             {
-                m_pixels[v * m_width + u] = '.';
+                m_pixels[v * m_width + u] = 'C';
             }
 
-            m_oozBuffer[v * m_width + u] = ooz;
+            /*m_oozBuffer[v * m_width + u] = ooz;*/
         }
     }
 }
@@ -69,7 +89,7 @@ void Screen::_ProjectInCenterScreenSpace(Vertex& vertex)
 {
     vertex.z += m_meshZPosition;
     vertex.x = m_zPosition * vertex.x / vertex.z;
-    vertex.y = m_zPosition * vertex.y / vertex.z / 2.f;
+    vertex.y = m_zPosition * vertex.y / vertex.z /*/ 2.f*/;
 }
 
 void Screen::_ProjectInTopLeftScreenSpace(Vertex& vertex)
